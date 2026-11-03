@@ -1,6 +1,6 @@
 # Dream Journal App
 
-A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using Claude.
+A full-stack web application that allows users to record their dreams and receive AI-powered interpretations using OpenAI.
 
 ## Features
 
@@ -8,16 +8,16 @@ A full-stack web application that allows users to record their dreams and receiv
 - Get AI interpretations of your dreams
 - View all past dreams and their interpretations
 - Delete dreams
-- SQLite database for persistent storage
+- PostgreSQL database for persistent storage
 - Vanilla JavaScript frontend
 - Express backend with RESTful API
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express
-- **Database**: SQLite (better-sqlite3)
+- **Database**: PostgreSQL
 - **Frontend**: HTML, CSS, Vanilla JavaScript
-- **AI**: Anthropic Claude API
+- **AI**: OpenAI API
 
 ## Project Structure
 
@@ -27,7 +27,6 @@ dream-journal/
 ├── package.json        # Dependencies and scripts
 ├── .env               # Environment variables (create this)
 ├── .env.example       # Example env file
-├── dreams.db          # SQLite database (auto-created)
 └── public/
     ├── index.html     # Frontend HTML
     ├── styles.css     # Styles
@@ -55,10 +54,17 @@ Edit `.env` and add your OpenAI API key:
 ```
 OPENAI_API_KEY=your_openai_api_key_here
 OPENAI_MODEL=gpt-4o-mini
+DATABASE_URL=postgresql://user:pass@localhost:5432/dream_catcher
+DATABASE_SSL=false
 PORT=3000
 ```
 
 Get your API key from: https://platform.openai.com/api-keys
+
+Set `DATABASE_URL` to your PostgreSQL connection string. For local
+development, create a database named `dream_catcher` and update the
+username and password in the connection string. Set `DATABASE_SSL=false`
+for a local PostgreSQL server without SSL; Render uses SSL by default.
 
 ### 3. Run the Application
 
@@ -98,18 +104,15 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
    - **Build Command**: `npm ci`
    - **Start Command**: `npm start`
 
-The project pins `sqlite3` to `5.1.7`, whose Linux native artifact supports
-older glibc versions. This avoids deploying the `sqlite3` 6.x native binary,
-which requires glibc 2.38 and cannot start on Render runtimes with an older
-glibc.
-After changing the dependency version, trigger a **Clear build cache & deploy**
-in Render so an old native `node_sqlite3.node` file is not reused.
-
 ### 3. Add Environment Variables
 
 In the Render dashboard, add:
 - `OPENAI_API_KEY`: Your OpenAI API key
 - `OPENAI_MODEL`: `gpt-4o-mini`
+- `DATABASE_URL`: The Internal Database URL from your Render PostgreSQL
+  database
+- `DATABASE_SSL`: Leave unset on Render; use `false` only for local
+  PostgreSQL without SSL
 
 ### 4. Deploy
 
@@ -117,10 +120,10 @@ Click "Create Web Service" and Render will deploy your app automatically.
 
 ### 5. Database Persistence
 
-Note: The SQLite database file will be stored in Render's ephemeral filesystem. For production, consider:
-- Using Render's persistent disk feature
-- Migrating to PostgreSQL for better persistence
-- Backing up data regularly
+The application creates the `dreams` table automatically when it starts.
+Create a PostgreSQL database in Render and set its Internal Database URL as
+`DATABASE_URL`. PostgreSQL keeps data independently of the web service's
+ephemeral filesystem.
 
 ## Usage
 
