@@ -1,6 +1,6 @@
 import 'dotenv/config';
-console.log("Gemini key loaded:", !!process.env.GEMINI_API_KEY);
-console.log("Gemini model:", process.env.GEMINI_MODEL);
+console.log("OpenAI key loaded:", !!process.env.OPENAI_API_KEY);
+console.log("OpenAI model:", process.env.OPENAI_MODEL || 'gpt-4o-mini');
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';

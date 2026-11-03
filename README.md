@@ -50,14 +50,15 @@ Create a `.env` file in the root directory:
 cp .env.example .env
 ```
 
-Edit `.env` and add your Anthropic API key:
+Edit `.env` and add your OpenAI API key:
 
 ```
-ANTHROPIC_API_KEY=your_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4o-mini
 PORT=3000
 ```
 
-Get your API key from: https://console.anthropic.com/
+Get your API key from: https://platform.openai.com/api-keys
 
 ### 3. Run the Application
 
@@ -107,7 +108,8 @@ in Render so an old native `node_sqlite3.node` file is not reused.
 ### 3. Add Environment Variables
 
 In the Render dashboard, add:
-- `ANTHROPIC_API_KEY`: Your Anthropic API key
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `OPENAI_MODEL`: `gpt-4o-mini`
 
 ### 4. Deploy
 
