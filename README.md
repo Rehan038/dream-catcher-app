@@ -94,8 +94,15 @@ Make sure your code is in a Git repository (GitHub, GitLab, etc.)
 4. Configure the service:
    - **Name**: dream-journal (or your choice)
    - **Environment**: Node
-   - **Build Command**: `npm install`
+   - **Build Command**: `npm ci`
    - **Start Command**: `npm start`
+
+The project pins `sqlite3` to `5.1.7`, whose Linux native artifact supports
+older glibc versions. This avoids deploying the `sqlite3` 6.x native binary,
+which requires glibc 2.38 and cannot start on Render runtimes with an older
+glibc.
+After changing the dependency version, trigger a **Clear build cache & deploy**
+in Render so an old native `node_sqlite3.node` file is not reused.
 
 ### 3. Add Environment Variables
 
